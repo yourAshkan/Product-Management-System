@@ -1,0 +1,6 @@
+@NadinSoftTask.Api_HostAddress = http://localhost:5153
+
+GET {{NadinSoftTask.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
