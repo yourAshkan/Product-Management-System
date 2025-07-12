@@ -1,4 +1,4 @@
-﻿namespace NadinSoftTask.Domain.Users.Entity;
+﻿namespace NadinSoftTask.Domain.Users;
 
 public class User
 {
