@@ -1,5 +1,4 @@
 ﻿using NadinSoftTask.Domain.Users;
-using System.ComponentModel.DataAnnotations;
 
 namespace NadinSoftTask.Domain.Products;
 
