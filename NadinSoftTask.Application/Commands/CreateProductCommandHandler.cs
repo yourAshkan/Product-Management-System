@@ -8,14 +8,21 @@ public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHan
 {
     public async Task<Product> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = new Product(
-            request.Title,
-            request.ProduceDate,
-            request.ManufacturePhone,
-            request.ManufacturePhone,
-            request.UserID);
-
-        await _repo.AddAsync(product);
-        return product;
+        try
+        {
+            var product = new Product(
+                request.Title,
+                request.ProduceDate,
+                request.ManufacturePhone,
+                request.ManufacturePhone,
+                request.UserID);
+    
+            await _repo.AddAsync(product);
+            return product;
+        }
+        catch
+        {
+            throw new Exception("Error!");
+        }
     }
 }

@@ -1,19 +1,21 @@
 ﻿using MediatR;
 using NadinSoftTask.Application.Interfaces;
-using NadinSoftTask.Domain.Products;
+using NadinSoftTask.Domain.Products.Entities;
 
 namespace NadinSoftTask.Application.Queries;
 
-public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, List<Product>>
+public class GetAllProductsQueryHandler(IProductRepository _repo) : IRequestHandler<GetAllProductsQuery, List<Product>>
 {
-    private readonly IProductRepository _repo;
-    public GetAllProductsQueryHandler(IProductRepository productRepository)
-    {
-        _repo = productRepository;  
-    }
     public async Task<List<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
     {
-        var products = await _repo.GetAllAsync();
-        return products;
+        try
+        {
+            var products = await _repo.GetAllAsync();
+            return products;
+        }
+        catch
+        {
+            throw new Exception("Error!");
+        }
     }
 }
