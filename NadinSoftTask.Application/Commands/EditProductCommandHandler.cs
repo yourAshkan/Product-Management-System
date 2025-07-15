@@ -3,29 +3,32 @@ using NadinSoftTask.Application.Interfaces;
 
 namespace NadinSoftTask.Application.Commands;
 
-public class EditProductCommandHandler : IRequestHandler<EditProductCommnad, bool>
+public class EditProductCommandHandler(IProductRepository _repo) : IRequestHandler<EditProductCommnad, bool>
 {
-    private readonly IProductRepository _repo;
-    public EditProductCommandHandler(IProductRepository productRepository)
-    {
-        _repo = productRepository;
-    }
     public async Task<bool> Handle(EditProductCommnad request, CancellationToken cancellationToken)
     {
-        var prodcut = await _repo.GetByIdAsync(request.ProductId);
-        if (prodcut == null)
-            throw new Exception("Product Not found!");
+        try
+        {
+            var prodcut = await _repo.GetByIdAsync(request.ProductId);
+            if (prodcut == null)
+                throw new Exception("Product Not found!");
 
-        if (!prodcut.CanModify(request.CurrentUserID))
-            throw new Exception("You are not allowed to modify this product!");
-
-
-        prodcut.Edit(request.NewTitle,
-                     request.NewProduceDate,
-                     request.NewManufactureEmail,
-                     request.NewManufacturePhone);
+            if (!prodcut.CanModify(request.CurrentUserID))
+                throw new Exception("You are not allowed to modify this product!");
 
 
-        return true;
+            prodcut.Edit(request.NewTitle,
+                         request.NewProduceDate,
+                         request.NewManufactureEmail,
+                         request.NewManufacturePhone);
+
+
+            return true;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
     }
 }

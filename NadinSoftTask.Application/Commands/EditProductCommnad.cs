@@ -2,12 +2,12 @@
 
 namespace NadinSoftTask.Application.Commands;
 
-public class EditProductCommnad : IRequest<bool>
+public class EditProductCommnad(int productId,string newTitle,DateTime newProduceDate,string newManufactureEmail,string newManufacturePhone,int currentUserID) : IRequest<bool>
 {
-    public int ProductId { get; init; }
-    public string NewTitle { get; init; }
-    public DateTime NewProduceDate { get; init; }
-    public string NewManufactureEmail { get; init; }
-    public string NewManufacturePhone { get; init; }
-    public int CurrentUserID { get; set; }
+    public int ProductId { get; init; } = productId;
+    public string NewTitle { get; init; } = newTitle;
+    public DateTime NewProduceDate { get; init; } = newProduceDate;
+    public string NewManufactureEmail { get; init; } = newManufactureEmail;
+    public string NewManufacturePhone { get; init; } = newManufacturePhone;
+    public int CurrentUserID { get; set; } = currentUserID;
 }
