@@ -2,27 +2,17 @@
 
 namespace NadinSoftTask.Domain.Products;
 
-public class Product
+public class Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int userId)
 {
     public int Id { get; set; }
-    public string Title { get; private set; }
-    public DateTime ProduceDate { get; private set; }
-    public string ManufactureEmail { get;  set; }
-    public string ManufacturePhone { get; set; }
-    public bool IsAvailable { get; set; } = true;
+    public string Title { get; private set; } = title;
+    public DateTime ProduceDate { get; private set; } = produceDate;
+    public string ManufactureEmail { get; private set; } = manufactureEmail;
+    public string ManufacturePhone { get; private set; } = manufacturePhone;
+    public bool IsAvailable { get; private set; } = true;
 
-    public int UserId { get; set; }
-    public User User { get; set; }
-
-    public Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int userId)
-    {
-        Title = title;
-        ProduceDate = produceDate;
-        ManufactureEmail = manufactureEmail;
-        ManufacturePhone = manufacturePhone;
-        UserId = userId;
-    }
-
+    public int UserId { get; private set; } = userId;
+    public User User { get; private set; }
 
     public bool CanModify(int currentUserId)
     {
