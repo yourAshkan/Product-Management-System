@@ -1,18 +1,15 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NadinSoftTask.Application.Commands;
 using NadinSoftTask.Application.Queries;
 
 namespace NadinSoftTask.WebApi.Controllers
 {
-    public class ProductsController : ControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductsController(IMediator _medi) : ControllerBase
     {
-        private readonly IMediator _medi;
-        public ProductsController(IMediator mediator)
-        {
-            _medi = mediator;
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
@@ -21,6 +18,7 @@ namespace NadinSoftTask.WebApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var product = await _medi.Send(new GetAllProductsQuery());
@@ -38,7 +36,8 @@ namespace NadinSoftTask.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] int id, EditProductCommnad commnad)
+        [AllowAnonymous]
+        public async Task<IActionResult> Update([FromRoute] int id, EditProductCommnad commnad)
         {
             if (id != commnad.ProductId)
                 return BadRequest("Product ID Mismatch!");
