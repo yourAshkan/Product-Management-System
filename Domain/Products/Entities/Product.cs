@@ -1,6 +1,6 @@
-﻿using NadinSoftTask.Domain.Users;
+﻿using NadinSoftTask.Domain.Users.Entities;
 
-namespace NadinSoftTask.Domain.Products;
+namespace NadinSoftTask.Domain.Products.Entities;
 
 public class Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int userId)
 {
