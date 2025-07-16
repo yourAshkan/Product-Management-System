@@ -52,11 +52,7 @@ namespace NadinSoftTask.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id , [FromQuery] int currentUserId)
         {
-            var result = await _medi.Send(new DeleteProductCommand
-            {
-                CurrentUserId = currentUserId,
-                ProductId = id
-            });
+            var result = await _medi.Send(new DeleteProductCommand(id, currentUserId));
 
             if (!result)
                 return BadRequest("You dont have permission to access!");
