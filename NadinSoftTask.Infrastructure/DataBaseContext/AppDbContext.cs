@@ -1,11 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NadinSoftTask.Domain.Products;
-using NadinSoftTask.Domain.Users;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using NadinSoftTask.Domain.Products.Entities;
+using NadinSoftTask.Domain.Users.Entities;
 
 namespace NadinSoftTask.Infrastructure.DataBaseContext;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
 {
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
     public DbSet<Product> Products { get; set; }
     public DbSet<User> Users { get; set; }
 
@@ -32,6 +37,5 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(x => x.EmailAddress)
             .HasMaxLength(50);
-
     }
 }

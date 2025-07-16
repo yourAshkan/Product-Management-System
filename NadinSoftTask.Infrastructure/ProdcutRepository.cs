@@ -1,17 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NadinSoftTask.Application.Interfaces;
-using NadinSoftTask.Domain.Products;
+using NadinSoftTask.Domain.Products.Entities;
 using NadinSoftTask.Infrastructure.DataBaseContext;
 
 namespace NadinSoftTask.Infrastructure;
 
-public class ProdcutRepository : IProductRepository
+public class ProdcutRepository(AppDbContext _context) : IProductRepository
 {
-    private readonly AppDbContext _context;
-    public ProdcutRepository(AppDbContext appDbContext)
-    {
-        _context = appDbContext;
-    }
     public async Task AddAsync(Product product)
     {
         await _context.AddAsync(product);
