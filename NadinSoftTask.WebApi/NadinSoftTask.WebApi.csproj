@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\NadinSoftTask.Domain.csproj" />
+    <ProjectReference Include="..\NadinSoftTask.Domain\NadinSoftTask.Domain.csproj" />
     <ProjectReference Include="..\NadinSoftTask.Application\NadinSoftTask.Application.csproj" />
     <ProjectReference Include="..\NadinSoftTask.Infrastructure\NadinSoftTask.Infrastructure.csproj" />
   </ItemGroup>

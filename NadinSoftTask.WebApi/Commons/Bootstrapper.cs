@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using NadinSoftTask.Infrastructure.Commons;
 using System.Text;
+using NadinSoftTask.Application.Commans;
 namespace NadinSoftTask.WebApi.Commons;
 
 public static class Bootstrapper
@@ -9,7 +10,7 @@ public static class Bootstrapper
     public static IServiceCollection AddWebApiService(this IServiceCollection service,IConfiguration configuration)
     {
         service.ContextRegister(configuration);
-
+        service.ApplicationRegister();
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -11,6 +11,7 @@ namespace NadinSoftTask.WebApi.Controllers
     public class ProductsController(IMediator _medi) : ControllerBase
     {
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
             var product = await _medi.Send(command);
@@ -26,6 +27,7 @@ namespace NadinSoftTask.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _medi.Send(new GetProductById(id));
@@ -36,7 +38,7 @@ namespace NadinSoftTask.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, EditProductCommnad commnad)
         {
             if (id != commnad.ProductId)
@@ -50,8 +52,10 @@ namespace NadinSoftTask.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id , [FromQuery] int currentUserId)
+        [Authorize]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            var currentUserId = Convert.ToInt32(HttpContext.User.Identities);
             var result = await _medi.Send(new DeleteProductCommand(id, currentUserId));
 
             if (!result)
