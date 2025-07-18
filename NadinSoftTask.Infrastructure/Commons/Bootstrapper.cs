@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NadinSoftTask.Application.Interfaces;
+using NadinSoftTask.Domain.Users.Entities;
 using NadinSoftTask.Infrastructure.DataBaseContext;
 
 namespace NadinSoftTask.Infrastructure.Commons;
@@ -13,9 +14,8 @@ public static class Bootstrapper
     {
         service.AddDbContext<AppDbContext>(x => x.UseSqlServer(configuration.GetConnectionString("DBConnection"),
             SqlOperation => SqlOperation.MigrationsAssembly("NadinSoftTask.Infrastructure")));
-
-
-        service.AddIdentity<IdentityUser<int>, IdentityRole<int>>()
+        
+        service.AddIdentity<User, IdentityRole<int>>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 

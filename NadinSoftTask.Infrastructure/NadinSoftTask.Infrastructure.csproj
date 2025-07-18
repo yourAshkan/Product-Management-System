@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\NadinSoftTask.Domain.csproj" />
+    <ProjectReference Include="..\NadinSoftTask.Domain\NadinSoftTask.Domain.csproj" />
   </ItemGroup>
 
 </Project>
