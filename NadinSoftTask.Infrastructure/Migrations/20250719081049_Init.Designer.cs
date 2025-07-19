@@ -12,8 +12,8 @@ using NadinSoftTask.Infrastructure.DataBaseContext;
 namespace NadinSoftTask.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250717183927_init")]
-    partial class init
+    [Migration("20250719081049_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
