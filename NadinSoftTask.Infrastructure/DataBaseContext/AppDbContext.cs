@@ -15,7 +15,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 
     public DbSet<Product> Products { get; set; }
     public DbSet<User> Users { get; set; }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().ToTable("Users", "HR");
@@ -41,7 +41,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasMaxLength(11);
 
         modelBuilder.Entity<User>()
-            .Property(x => x.EmailAddress)
+            .Property(x => x.Email)
             .HasMaxLength(50);
     }
 }

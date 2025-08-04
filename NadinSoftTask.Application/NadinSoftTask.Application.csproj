@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\NadinSoftTask.Domain.csproj" />
+    <ProjectReference Include="..\NadinSoftTask.Domain\NadinSoftTask.Domain.csproj" />
+    <ProjectReference Include="..\NadinSoftTask.Domain\NadinSoftTask.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 

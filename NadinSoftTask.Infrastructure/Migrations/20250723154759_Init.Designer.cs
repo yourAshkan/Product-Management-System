@@ -12,7 +12,7 @@ using NadinSoftTask.Infrastructure.DataBaseContext;
 namespace NadinSoftTask.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250719081049_Init")]
+    [Migration("20250723154759_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -186,9 +186,7 @@ namespace NadinSoftTask.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -222,6 +220,10 @@ namespace NadinSoftTask.Infrastructure.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -239,6 +241,7 @@ namespace NadinSoftTask.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -14,8 +14,13 @@ public static class Bootstrapper
     {
         service.AddDbContext<AppDbContext>(x => x.UseSqlServer(configuration.GetConnectionString("DBConnection"),
             SqlOperation => SqlOperation.MigrationsAssembly("NadinSoftTask.Infrastructure")));
-        
-        service.AddIdentity<User, IdentityRole<int>>()
+
+        service.AddIdentity<User, IdentityRole<int>>(option =>
+        {
+            option.Password.RequireDigit = false;
+            option.Password.RequiredLength = 8;
+            option.Password.RequireUppercase = false;
+        })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 

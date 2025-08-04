@@ -3,14 +3,18 @@ using Microsoft.IdentityModel.Tokens;
 using NadinSoftTask.Infrastructure.Commons;
 using System.Text;
 using NadinSoftTask.Application.Commans;
+using NadinSoftTask.Application.Mapping;
 namespace NadinSoftTask.WebApi.Commons;
 
 public static class Bootstrapper
 {
     public static IServiceCollection AddWebApiService(this IServiceCollection service,IConfiguration configuration)
     {
+        var applicationAssembly = typeof(UserMappingProfile).Assembly;
+
         service.ContextRegister(configuration);
         service.ApplicationRegister();
+        service.AddAutoMapper(applicationAssembly);
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
