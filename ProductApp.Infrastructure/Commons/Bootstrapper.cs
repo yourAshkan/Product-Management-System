@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProductApp.Domain.Users.Entities;
 using ProductApp.Infrastructure.DataBaseContext;
 using ProductApp.Domain.Products.Contracts;
+using ProductApp.Infrastructure.Identity;
 
 namespace ProductApp.Infrastructure.Commons;
 
@@ -15,7 +15,7 @@ public static class Bootstrapper
         service.AddDbContext<AppDbContext>(x => x.UseSqlServer(configuration.GetConnectionString("DBConnection"),
             SqlOperation => SqlOperation.MigrationsAssembly("ProductApp.Infrastructure")));
 
-        service.AddIdentity<User, IdentityRole<int>>(option =>
+        service.AddIdentity<ApplicationUser, IdentityRole<int>>(option =>
         {
             option.Password.RequireDigit = false;
             option.Password.RequiredLength = 8;
