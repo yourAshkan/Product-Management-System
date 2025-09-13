@@ -4,40 +4,30 @@ using Microsoft.AspNetCore.Mvc;
 using ProductApp.Application.Commands;
 using ProductApp.Application.Queries;
 
-namespace ProductApp.WebApi.Controllers
+namespace ProductApp.Presentations.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController(IMediator _medi) : ControllerBase
     {
+        #region CreateProduct
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            command.UserID = int.Parse(userIdClaim);
+
             var product = await _medi.Send(command);
             return Ok(product);
         }
+        #endregion
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
-        {
-            var product = await _medi.Send(new GetAllProductsQuery());
-            return Ok(product);
-        }
-
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var product = await _medi.Send(new GetProductById(id));
-            if(product == null)
-                return NotFound();
-
-            return Ok(product);
-        }
-
-        [HttpPut("{id}")]
+        #region UpdateProduct
+        [HttpPut("UpdateProduct")]
         [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, EditProductCommnad commnad)
         {
@@ -50,8 +40,10 @@ namespace ProductApp.WebApi.Controllers
 
             return NoContent();
         }
+        #endregion
 
-        [HttpDelete("{id}")]
+        #region DeleteProduct
+        [HttpDelete("DeleteProduct")]
         [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -62,6 +54,30 @@ namespace ProductApp.WebApi.Controllers
                 return BadRequest("You dont have permission to access!");
 
             return NoContent();
+        } 
+        #endregion
+
+        #region GetAll
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll()
+        {
+            var product = await _medi.Send(new GetAllProductsQuery());
+            return Ok(product);
         }
+        #endregion
+
+        #region GetById
+        [HttpGet("ById")]
+        [Authorize]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var product = await _medi.Send(new GetProductById(id));
+            if (product == null)
+                return NotFound();
+
+            return Ok(product);
+        }
+        #endregion
     }
 }

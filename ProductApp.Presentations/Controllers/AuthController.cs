@@ -2,29 +2,52 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ProductApp.Domain.Users.Entities;
 using ProductApp.Application.Dtos.UserDtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ProductApp.Infrastructure.Identity;
 
-namespace ProductApp.WebApi.Controllers
+namespace ProductApp.Presentations.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(UserManager<User> userManager,IConfiguration config, SignInManager<IdentityUser<int>> signInManager,IMapper _mapper) : ControllerBase
+    public class AuthController(UserManager<ApplicationUser> userManager,IConfiguration config, SignInManager<ApplicationUser> signInManager,IMapper _mapper) : ControllerBase
     {
+        #region SignIn
         [HttpPost("SignIn")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var user = _mapper.Map<User>(dto);
+            var user = _mapper.Map<ApplicationUser>(dto);
 
-            var result = await userManager.CreateAsync(user,dto.Password);
+            var result = await userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
             return Ok("User registered successfully");
         }
+        #endregion
+
+        #region LogIn
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            var user = await userManager.FindByNameAsync(dto.Email);
+
+            if (user == null)
+                return BadRequest("Invalid Email or password");
+
+            var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+            if (!result.Succeeded)
+                return Unauthorized("Invalid Email or password");
+
+            var token = GenerateJwtToken(user);
+            return Ok(new { token });
+        } 
+        #endregion
+
+        #region GenerateJWT
         private string GenerateJwtToken(IdentityUser<int> user)
         {
             var claims = new[]
@@ -34,7 +57,7 @@ namespace ProductApp.WebApi.Controllers
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: config["JWT:Issuer"],
@@ -45,22 +68,7 @@ namespace ProductApp.WebApi.Controllers
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
-            var user = await userManager.FindByNameAsync(dto.Email);
-
-            if (user == null)
-                return BadRequest("Invalid Email or password");
-
-            var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password,false);
-            if (!result.Succeeded)
-                return Unauthorized("Invalid Email or password");
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { token });
-        }
+        } 
+        #endregion
     }
 }

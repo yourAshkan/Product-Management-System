@@ -13,16 +13,16 @@ public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHan
             var product = new Product(
                 request.Title,
                 request.ProduceDate,
-                request.ManufacturePhone,
+                request.ManufactureEmail,
                 request.ManufacturePhone,
                 request.UserID);
     
             await _repo.AddAsync(product);
             return product;
         }
-        catch
+        catch(Exception ex)
         {
-            throw new Exception("Error!");
+            throw new Exception("Error while creating product", ex);
         }
     }
 }
