@@ -20,9 +20,9 @@ public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHan
             await _repo.AddAsync(product);
             return product;
         }
-        catch(Exception ex)
+        catch
         {
-            throw new Exception("Error while creating product", ex);
+            throw new Exception("Error!");
         }
     }
 }

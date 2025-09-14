@@ -27,33 +27,38 @@ namespace ProductApp.Presentations.Controllers
         #endregion
 
         #region UpdateProduct
-        [HttpPut("UpdateProduct")]
+        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, EditProductCommnad commnad)
         {
-            if (id != commnad.ProductId)
-                return BadRequest("Product ID Mismatch!");
+            commnad.ProductId = id;
 
             var product = await _medi.Send(commnad);
             if (!product)
                 return NotFound();
 
-            return NoContent();
+            return Ok("Product Updated!");
         }
         #endregion
 
         #region DeleteProduct
         [HttpDelete("DeleteProduct")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromBody] int id)
         {
-            var currentUserId = Convert.ToInt32(HttpContext.User.Identities);
+            var userIdCliam = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdCliam))
+                throw new Exception("User ID Not Found!");
+
+            var currentUserId = int.Parse(userIdCliam);
+
             var result = await _medi.Send(new DeleteProductCommand(id, currentUserId));
 
             if (!result)
                 return BadRequest("You dont have permission to access!");
 
-            return NoContent();
+            return Ok("Product Deleted");
         } 
         #endregion
 

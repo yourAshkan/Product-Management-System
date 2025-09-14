@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ProductApp.Domain.Users.Entities;
 using ProductApp.Domain.Products.Entities;
 using ProductApp.Infrastructure.Identity;
 
