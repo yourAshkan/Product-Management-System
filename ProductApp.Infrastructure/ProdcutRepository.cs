@@ -15,6 +15,14 @@ public class ProdcutRepository(AppDbContext _context) : IProductRepository
     }
     #endregion
 
+    #region Update
+    public async Task UpdateAsync(Product product)
+    {
+        _context.Update(product);
+        await _context.SaveChangesAsync();
+    } 
+    #endregion
+    
     #region Delete
     public async Task DeleteAsync(Product product)
     {
@@ -40,6 +48,7 @@ public class ProdcutRepository(AppDbContext _context) : IProductRepository
         var product = await _context.Products.FindAsync(id);
 
         return product;
-    } 
+    }
     #endregion
+
 }

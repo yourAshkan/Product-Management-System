@@ -24,7 +24,9 @@ namespace ProductApp.Presentations.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            return Ok("User registered successfully");
+            var token = GenerateJwtToken(user);
+            return Ok(new { token });
+            //return Ok("User registered successfully");
         }
         #endregion
 

@@ -22,7 +22,7 @@ public class EditProductCommandHandler(IProductRepository _repo) : IRequestHandl
                          request.NewManufactureEmail,
                          request.NewManufacturePhone);
 
-
+            await _repo.UpdateAsync(prodcut);
             return true;
         }
         catch(Exception ex)

@@ -9,7 +9,8 @@ namespace ProductApp.Presentations.Commons;
 
 public static class Bootstrapper
 {
-    public static IServiceCollection AddApiService(this IServiceCollection service,IConfiguration configuration)
+    #region Register Services
+    public static IServiceCollection AddApiService(this IServiceCollection service, IConfiguration configuration)
     {
 
         service.ContextRegister(configuration);
@@ -59,10 +60,13 @@ public static class Bootstrapper
                     new string[] {}
                     }
                 });
-        });
+            });
 
         return service;
     }
+    #endregion
+
+    #region Middelwares
     public static WebApplication UseApiMiddlewares(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
@@ -81,5 +85,6 @@ public static class Bootstrapper
         app.MapControllers();
 
         return app;
-    }
+    } 
+    #endregion
 }

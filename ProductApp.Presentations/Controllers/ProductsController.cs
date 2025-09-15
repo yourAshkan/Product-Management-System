@@ -36,7 +36,7 @@ namespace ProductApp.Presentations.Controllers
             var product = await _medi.Send(commnad);
             if (!product)
                 return NotFound();
-
+            
             return Ok("Product Updated!");
         }
         #endregion
