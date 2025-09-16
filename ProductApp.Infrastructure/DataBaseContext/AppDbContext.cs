@@ -13,6 +13,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,5 +21,11 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>
         modelBuilder.Entity<IdentityUserRole<int>>().HasNoKey();
         modelBuilder.Entity<IdentityUserToken<int>>().HasNoKey();
         modelBuilder.Entity<IdentityUserClaim<int>>().HasNoKey();
+
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.Category)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

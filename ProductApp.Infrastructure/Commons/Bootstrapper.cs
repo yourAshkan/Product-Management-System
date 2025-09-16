@@ -25,6 +25,7 @@ public static class Bootstrapper
             .AddDefaultTokenProviders();
 
         service.AddScoped<IProductRepository, ProdcutRepository>();
+        service.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return service;
     }

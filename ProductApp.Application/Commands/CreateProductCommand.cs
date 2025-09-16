@@ -13,9 +13,10 @@ public class CreateProductCommand : IRequest<Product>
     public string ManufacturePhone { get; init; }
     public bool IsAvailable { get; set; }
     public int UserID { get; set; }
+    public int CategoryId { get; set; }
 
     [JsonConstructor]
-    public CreateProductCommand(string title, string manufactureEmail, string manufacturePhone, int userID)
+    public CreateProductCommand(string title, string manufactureEmail, string manufacturePhone, int userID,int categoryId)
     {
         Title = title;
         ProduceDate = DateTime.Now;
@@ -23,6 +24,6 @@ public class CreateProductCommand : IRequest<Product>
         ManufacturePhone = manufacturePhone;
         IsAvailable = true;
         UserID = userID;
+        CategoryId = categoryId;
     }
-
 }

@@ -13,14 +13,15 @@ public class EditProductCommandHandler(IProductRepository _repo) : IRequestHandl
             if (prodcut == null)
                 throw new Exception("Product Not found!");
 
-            if (!prodcut.CanModify(request.CurrentUserID))
+            if (!prodcut.CanModify(request.CurrentUserId))
                 throw new Exception("You are not allowed to modify this product!");
 
 
             prodcut.Edit(request.NewTitle,
                          request.NewProduceDate,
                          request.NewManufactureEmail,
-                         request.NewManufacturePhone);
+                         request.NewManufacturePhone,
+                         request.CategoryId);
 
             await _repo.UpdateAsync(prodcut);
             return true;
@@ -28,7 +29,7 @@ public class EditProductCommandHandler(IProductRepository _repo) : IRequestHandl
         catch(Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return false;
+           return false;
         }
     }
 }

@@ -15,7 +15,8 @@ public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHan
                 request.ProduceDate,
                 request.ManufactureEmail,
                 request.ManufacturePhone,
-                request.UserID);
+                request.UserID,
+                request.CategoryId);
     
             await _repo.AddAsync(product);
             return product;
