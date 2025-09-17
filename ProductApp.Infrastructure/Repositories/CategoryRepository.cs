@@ -39,7 +39,9 @@ namespace ProductApp.Infrastructure.Repositories
         {
             try
             {
-                var categories = await _context.Categories.ToListAsync();
+                var categories = await _context.Categories
+                    .Include(x=>x.Products)
+                    .ToListAsync();
                 return categories;
             }
             catch (Exception ex)

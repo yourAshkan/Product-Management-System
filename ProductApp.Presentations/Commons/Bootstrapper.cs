@@ -35,7 +35,11 @@ public static class Bootstrapper
             };
         });
 
-        service.AddControllers();
+        service.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            options.JsonSerializerOptions.WriteIndented = true;
+        });
         service.AddEndpointsApiExplorer();
         service.AddSwaggerGen(x =>
             {
