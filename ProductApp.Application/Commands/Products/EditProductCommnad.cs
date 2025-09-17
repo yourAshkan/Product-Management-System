@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ProductApp.Application.Commands;
+namespace ProductApp.Application.Commands.Products;
 
 public class EditProductCommnad(int productId, string newTitle, DateTime newProduceDate, string newManufactureEmail, string newManufacturePhone,int currentUserId ,int categoryId) : IRequest<bool>
 {

@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductApp.Infrastructure.DataBaseContext;
-using ProductApp.Domain.Products.Contracts;
 using ProductApp.Infrastructure.Identity;
+using ProductApp.Infrastructure.Repositories;
+using ProductApp.Domain.Categories.Contract;
+using ProductApp.Domain.Products.Contract;
 
 namespace ProductApp.Infrastructure.Commons;
 

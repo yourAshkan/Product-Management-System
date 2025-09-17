@@ -1,20 +1,35 @@
 ﻿using ProductApp.Domain.Users.Entities;
+using ProductApp.Domain.Categories.Entities;
 
 namespace ProductApp.Domain.Products.Entities;
 
-public class Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int userId, int categoryId)
+public class Product
 {
     public int Id { get; set; }
-    public string Title { get; private set; } = title;
-    public DateTime ProduceDate { get; private set; } = produceDate;
-    public string ManufactureEmail { get; private set; } = manufactureEmail;
-    public string ManufacturePhone { get; private set; } = manufacturePhone;
+    public string Title { get; private set; }
+    public DateTime ProduceDate { get; private set; }
+    public string ManufactureEmail { get; private set; }
+    public string ManufacturePhone { get; private set; }
     public bool IsAvailable { get; private set; } = true;
-    public int UserId { get; set; } = userId;
+    public int? UserId { get; set; } 
     public User User { get; set; }
-    public int CategoryId { get; set; } = categoryId;
+    public int? CategoryId { get; set; }
     public Category Category { get; set; }
 
+    public Product()
+    {
+    }
+
+    public Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int? userId, int? categoryId)
+    {
+        Title = title;
+        ProduceDate = produceDate;
+        ManufactureEmail = manufactureEmail;
+        ManufacturePhone = manufacturePhone;
+        UserId = userId;
+        CategoryId = categoryId;
+        ProduceDate = DateTime.Now;
+    }
 
     public bool CanModify(int currentUserId)
     {

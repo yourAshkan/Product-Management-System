@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using ProductApp.Domain.Products.Contracts;
+using ProductApp.Domain.Products.Contract;
 
-namespace ProductApp.Application.Commands;
+namespace ProductApp.Application.Commands.Products;
 
 public class EditProductCommandHandler(IProductRepository _repo) : IRequestHandler<EditProductCommnad, bool>
 {

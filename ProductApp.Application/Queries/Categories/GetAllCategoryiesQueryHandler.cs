@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using ProductApp.Domain.Products.Contracts;
-using ProductApp.Domain.Products.Entities;
+using ProductApp.Domain.Categories.Contract;
+using ProductApp.Domain.Categories.Entities;
 
-namespace ProductApp.Application.Queries
+namespace ProductApp.Application.Queries.Categories
 {
     public class GetAllCategoryiesQueryHandler(ICategoryRepository _repo) : IRequestHandler<GetAllCategoryiesQuery, List<Category>>
     {
@@ -13,9 +13,9 @@ namespace ProductApp.Application.Queries
                 var categories = await _repo.GetAllAsync();
                 return categories;
             }
-            catch
+            catch(Exception ex)
             {
-                throw new Exception("Error!");
+                throw new Exception("Erorr",ex);
             }
         }
     }

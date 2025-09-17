@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using ProductApp.Domain.Products.Entities;
+using ProductApp.Domain.Categories.Entities;
 
-namespace ProductApp.Application.Queries
+namespace ProductApp.Application.Queries.Categories
 {
     public class GetAllCategoryiesQuery : IRequest<List<Category>>
     {

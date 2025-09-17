@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ProductApp.Domain.Products.Entities;
 
-namespace ProductApp.Application.Queries;
+namespace ProductApp.Application.Queries.Products;
 
 public class GetProductById(int productId) : IRequest<Product>
 {

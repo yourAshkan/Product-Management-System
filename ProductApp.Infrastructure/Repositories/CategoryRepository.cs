@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductApp.Domain.Products.Contracts;
-using ProductApp.Domain.Products.Entities;
+using ProductApp.Domain.Categories.Contract;
+using ProductApp.Domain.Categories.Entities;
 using ProductApp.Infrastructure.DataBaseContext;
 
-namespace ProductApp.Infrastructure
+namespace ProductApp.Infrastructure.Repositories
 {
     public class CategoryRepository(AppDbContext _context) : ICategoryRepository
     {
@@ -13,7 +13,14 @@ namespace ProductApp.Infrastructure
             await _context.AddAsync(category);
             await _context.SaveChangesAsync();
         }
+        #endregion
 
+        #region Delete
+        public async Task DeleteAsync(Category category)
+        {
+            _context.Remove(category);
+            await _context.SaveChangesAsync();
+        } 
         #endregion
 
         #region GetByID
@@ -30,9 +37,16 @@ namespace ProductApp.Infrastructure
         #region GetAll
         public async Task<List<Category>> GetAllAsync()
         {
-            var categories = await _context.Categories.ToListAsync();
-            return categories;
-        } 
+            try
+            {
+                var categories = await _context.Categories.ToListAsync();
+                return categories;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error", ex);
+            }
+        }
         #endregion
     }
 }

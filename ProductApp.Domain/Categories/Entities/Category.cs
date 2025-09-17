@@ -1,4 +1,6 @@
-﻿namespace ProductApp.Domain.Products.Entities
+﻿using ProductApp.Domain.Products.Entities;
+
+namespace ProductApp.Domain.Categories.Entities
 {
     public class Category(string name,int userId)
     {
@@ -8,6 +10,10 @@
         public List<Product> Products { get; private set; } = new List<Product>();
 
 
+        public bool CanModify(int currentUserId)
+        {
+            return UserId == currentUserId;
+        }
         public void AddProduct(Product product)
         {
             if (product == null)

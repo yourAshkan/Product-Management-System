@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductApp.Domain.Products.Contracts;
-using ProductApp.Domain.Products.Entities;
 using ProductApp.Infrastructure.DataBaseContext;
+using ProductApp.Domain.Products.Contract;
+using ProductApp.Domain.Products.Entities;
 
-namespace ProductApp.Infrastructure;
+namespace ProductApp.Infrastructure.Repositories;
 
 public class ProdcutRepository(AppDbContext _context) : IProductRepository
 {
@@ -32,7 +32,7 @@ public class ProdcutRepository(AppDbContext _context) : IProductRepository
     #endregion
 
     #region GetAll
-    public async Task<List<Product>> GetAllAsync()
+    public async Task<List<Product?>> GetAllAsync()
     {
         var product = await _context.Products.ToListAsync();
         return product;

@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductApp.Application.Commands;
-using ProductApp.Application.Queries;
+using ProductApp.Application.Commands.Products;
+using ProductApp.Application.Commands.Products;
+using ProductApp.Application.Queries.Products;
 
 namespace ProductApp.Presentations.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController(IMediator _medi) : ControllerBase
+    public class ProductsController(IMediator _mediator) : ControllerBase
     {
         #region CreateProduct
         [HttpPost]
@@ -21,7 +22,7 @@ namespace ProductApp.Presentations.Controllers
 
             command.UserID = int.Parse(userIdClaim);
 
-            var product = await _medi.Send(command);
+            var product = await _mediator.Send(command);
             return Ok(product);
         }
         #endregion
@@ -33,7 +34,7 @@ namespace ProductApp.Presentations.Controllers
         {
             commnad.ProductId = id;
 
-            var product = await _medi.Send(commnad);
+            var product = await _mediator.Send(commnad);
             if (!product)
                 return NotFound();
             
@@ -53,7 +54,7 @@ namespace ProductApp.Presentations.Controllers
 
             var currentUserId = int.Parse(userIdCliam);
 
-            var result = await _medi.Send(new DeleteProductCommand(id, currentUserId));
+            var result = await _mediator.Send(new DeleteProductCommand(id, currentUserId));
 
             if (!result)
                 return BadRequest("You dont have permission to access!");
@@ -67,7 +68,7 @@ namespace ProductApp.Presentations.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
-            var product = await _medi.Send(new GetAllProductsQuery());
+            var product = await _mediator.Send(new GetAllProductsQuery());
             return Ok(product);
         }
         #endregion
@@ -77,7 +78,7 @@ namespace ProductApp.Presentations.Controllers
         [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
-            var product = await _medi.Send(new GetProductById(id));
+            var product = await _mediator.Send(new GetProductById(id));
             if (product == null)
                 return NotFound();
 

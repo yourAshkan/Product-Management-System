@@ -26,7 +26,6 @@ namespace ProductApp.Presentations.Controllers
 
             var token = GenerateJwtToken(user);
             return Ok(new { token });
-            //return Ok("User registered successfully");
         }
         #endregion
 

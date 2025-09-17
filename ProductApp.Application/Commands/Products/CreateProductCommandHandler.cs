@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using ProductApp.Domain.Products.Contracts;
+using ProductApp.Domain.Products.Contract;
 using ProductApp.Domain.Products.Entities;
 
-namespace ProductApp.Application.Commands;
+namespace ProductApp.Application.Commands.Products;
 
 public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHandler<CreateProductCommand, Product>
 {
