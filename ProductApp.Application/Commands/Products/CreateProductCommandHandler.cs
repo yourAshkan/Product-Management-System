@@ -16,8 +16,10 @@ public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHan
                 request.ManufactureEmail,
                 request.ManufacturePhone,
                 request.UserID,
-                request.CategoryId);
-    
+                request.CategoryId,
+                request.Price,
+                request.Count);
+
             await _repo.AddAsync(product);
             return product;
         }

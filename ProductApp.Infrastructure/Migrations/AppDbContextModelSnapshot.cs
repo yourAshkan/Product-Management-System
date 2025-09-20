@@ -163,10 +163,10 @@ namespace ProductApp.Infrastructure.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Count")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
                     b.Property<string>("ManufactureEmail")
@@ -176,6 +176,10 @@ namespace ProductApp.Infrastructure.Migrations
                     b.Property<string>("ManufacturePhone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("ProduceDate")
                         .HasColumnType("datetime2");

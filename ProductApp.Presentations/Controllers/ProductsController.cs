@@ -19,7 +19,7 @@ namespace ProductApp.Presentations.Controllers
             if (userIdClaim == null)
                 return Unauthorized();
 
-            command.UserID = int.Parse(userIdClaim);
+            command.SetUserId(int.Parse(userIdClaim));
 
             var product = await _mediator.Send(command);
             return Ok(product);

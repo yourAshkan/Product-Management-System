@@ -12,8 +12,8 @@ using ProductApp.Infrastructure.DataBaseContext;
 namespace ProductApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250916083709_InitCategoryTable")]
-    partial class InitCategoryTable
+    [Migration("20250920094949_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,7 +135,7 @@ namespace ProductApp.Infrastructure.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("ProductApp.Domain.Products.Entities.Category", b =>
+            modelBuilder.Entity("ProductApp.Domain.Categories.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +163,10 @@ namespace ProductApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Count")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsAvailable")
@@ -177,6 +180,10 @@ namespace ProductApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("ProduceDate")
                         .HasColumnType("datetime2");
 
@@ -184,7 +191,7 @@ namespace ProductApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -258,11 +265,9 @@ namespace ProductApp.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -302,24 +307,21 @@ namespace ProductApp.Infrastructure.Migrations
 
             modelBuilder.Entity("ProductApp.Domain.Products.Entities.Product", b =>
                 {
-                    b.HasOne("ProductApp.Domain.Products.Entities.Category", "Category")
+                    b.HasOne("ProductApp.Domain.Categories.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProductApp.Domain.Users.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProductApp.Domain.Products.Entities.Category", b =>
+            modelBuilder.Entity("ProductApp.Domain.Categories.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });

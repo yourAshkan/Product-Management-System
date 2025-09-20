@@ -79,6 +79,7 @@ public static class Bootstrapper
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseDeveloperExceptionPage();
         }
 
 

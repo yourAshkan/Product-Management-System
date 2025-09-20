@@ -10,9 +10,9 @@ public class Product
     public DateTime ProduceDate { get; private set; }
     public string ManufactureEmail { get; private set; }
     public string ManufacturePhone { get; private set; }
-    //public decimal Price { get; set; }
-    //public int Count { get; set; }
-    public bool IsAvailable { get; private set; } = true;
+    public decimal? Price { get; private set; }
+    public int? Count { get; private set; }
+    public bool IsAvailable { get; set; } = true;
     public int? UserId { get; set; } 
     public User User { get; set; }
     public int? CategoryId { get; set; }
@@ -22,7 +22,7 @@ public class Product
     {
     }
 
-    public Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int? userId, int? categoryId)
+    public Product(string title, DateTime produceDate, string manufactureEmail, string manufacturePhone, int? userId, int? categoryId, decimal price, int count)
     {
         Title = title;
         ProduceDate = produceDate;
@@ -30,15 +30,11 @@ public class Product
         ManufacturePhone = manufacturePhone;
         UserId = userId;
         CategoryId = categoryId;
+        Price = price;
+        Count = count;
         ProduceDate = DateTime.Now;
     }
 
-    //public int Counter(int count)
-    //{
-    //    if (count >= 0)
-    //        Count += count;
-
-    //}
     public bool CanModify(int currentUserId)
     {
        return UserId == currentUserId;

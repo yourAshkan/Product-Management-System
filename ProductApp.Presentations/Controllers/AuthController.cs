@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ProductApp.Infrastructure.Identity;
+using ProductApp.Domain.Users.Entities;
 
 namespace ProductApp.Presentations.Controllers
 {
@@ -18,13 +19,21 @@ namespace ProductApp.Presentations.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var user = _mapper.Map<ApplicationUser>(dto);
+            var user = _mapper.Map<User>(dto);
 
-            var result = await userManager.CreateAsync(user, dto.Password);
+            var appUser = new ApplicationUser
+            {
+                UserName = user.Email,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
+
+            var result = await userManager.CreateAsync(appUser, dto.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(appUser);
             return Ok(new { token });
         }
         #endregion
