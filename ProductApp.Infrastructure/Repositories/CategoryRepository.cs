@@ -29,7 +29,9 @@ namespace ProductApp.Infrastructure.Repositories
             if (id <= 0)
                 throw new Exception("Invalid ID!");
 
-            var result = _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            var result = _context.Categories
+                .Include(x=>x.Products)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return await result;
         }
         #endregion

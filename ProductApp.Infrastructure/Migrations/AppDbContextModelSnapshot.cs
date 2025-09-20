@@ -132,7 +132,7 @@ namespace ProductApp.Infrastructure.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("ProductApp.Domain.Products.Entities.Category", b =>
+            modelBuilder.Entity("ProductApp.Domain.Categories.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,10 +160,13 @@ namespace ProductApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("ManufactureEmail")
@@ -181,7 +184,7 @@ namespace ProductApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -255,11 +258,9 @@ namespace ProductApp.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -299,24 +300,21 @@ namespace ProductApp.Infrastructure.Migrations
 
             modelBuilder.Entity("ProductApp.Domain.Products.Entities.Product", b =>
                 {
-                    b.HasOne("ProductApp.Domain.Products.Entities.Category", "Category")
+                    b.HasOne("ProductApp.Domain.Categories.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProductApp.Domain.Users.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProductApp.Domain.Products.Entities.Category", b =>
+            modelBuilder.Entity("ProductApp.Domain.Categories.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });

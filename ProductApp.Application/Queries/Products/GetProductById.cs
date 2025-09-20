@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using ProductApp.Domain.Products.Entities;
+using ProductApp.Application.Dtos.ProductDtos;
 
 namespace ProductApp.Application.Queries.Products;
 
-public class GetProductById(int productId) : IRequest<Product>
+public class GetProductById(int productId) : IRequest<ProductDto?>
 {
     public int ProductId { get; set; } = productId;
 }

@@ -34,7 +34,9 @@ public class ProdcutRepository(AppDbContext _context) : IProductRepository
     #region GetAll
     public async Task<List<Product?>> GetAllAsync()
     {
-        var product = await _context.Products.ToListAsync();
+        var product = await _context.Products
+            .Include(x=>x.Category)
+            .ToListAsync();
         return product;
     }
     #endregion
@@ -45,10 +47,11 @@ public class ProdcutRepository(AppDbContext _context) : IProductRepository
         if (id <= 0)
             throw new Exception("Product not found!");
 
-        var product = await _context.Products.FindAsync(id);
+        var product = await _context.Products
+            .Include(x=>x.Category)
+            .FirstOrDefaultAsync(x=>x.Id == id);
 
         return product;
     }
     #endregion
-
 }

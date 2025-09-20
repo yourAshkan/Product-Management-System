@@ -10,6 +10,8 @@ public class Product
     public DateTime ProduceDate { get; private set; }
     public string ManufactureEmail { get; private set; }
     public string ManufacturePhone { get; private set; }
+    //public decimal Price { get; set; }
+    //public int Count { get; set; }
     public bool IsAvailable { get; private set; } = true;
     public int? UserId { get; set; } 
     public User User { get; set; }
@@ -31,6 +33,12 @@ public class Product
         ProduceDate = DateTime.Now;
     }
 
+    //public int Counter(int count)
+    //{
+    //    if (count >= 0)
+    //        Count += count;
+
+    //}
     public bool CanModify(int currentUserId)
     {
        return UserId == currentUserId;

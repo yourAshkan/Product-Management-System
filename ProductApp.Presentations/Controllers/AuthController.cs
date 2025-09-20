@@ -14,8 +14,8 @@ namespace ProductApp.Presentations.Controllers
     [ApiController]
     public class AuthController(UserManager<ApplicationUser> userManager,IConfiguration config, SignInManager<ApplicationUser> signInManager,IMapper _mapper) : ControllerBase
     {
-        #region SignIn
-        [HttpPost("SignIn")]
+        #region SignUp
+        [HttpPost("SignUp")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
             var user = _mapper.Map<ApplicationUser>(dto);
@@ -31,7 +31,7 @@ namespace ProductApp.Presentations.Controllers
 
         #region LogIn
 
-        [HttpPost("Login")]
+        [HttpPost("LogIn")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
             var user = await userManager.FindByNameAsync(dto.Email);

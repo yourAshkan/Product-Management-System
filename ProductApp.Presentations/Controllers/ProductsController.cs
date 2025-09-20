@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductApp.Application.Commands.Products;
-using ProductApp.Application.Commands.Products;
 using ProductApp.Application.Queries.Products;
 
 namespace ProductApp.Presentations.Controllers
@@ -60,7 +59,7 @@ namespace ProductApp.Presentations.Controllers
                 return BadRequest("You dont have permission to access!");
 
             return Ok("Product Deleted");
-        } 
+        }
         #endregion
 
         #region GetAll

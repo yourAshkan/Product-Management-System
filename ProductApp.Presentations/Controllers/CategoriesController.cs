@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductApp.Application.Commands.Categories;
-using ProductApp.Application.Commands.Categories;
 using ProductApp.Application.Queries.Categories;
 using System.Security.Claims;
 
@@ -11,7 +10,7 @@ namespace ProductApp.WebApi.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class CategoryController(IMediator _mediator) : ControllerBase
+    public class CategoriesController(IMediator _mediator) : ControllerBase
     {
         #region CreateCategory
         [Authorize]
@@ -44,7 +43,7 @@ namespace ProductApp.WebApi.Controllers
             var result = await _mediator.Send(new DeleteCategoryCommand(id, currentUserId));
 
             if (!result)
-                return BadRequest("You dont have permission to access!");
+                return BadRequest("Category Not Found!");
 
             return Ok("Category Deleted");
         }

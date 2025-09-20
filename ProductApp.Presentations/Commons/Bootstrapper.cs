@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProductApp.Application.Commans;
 using ProductApp.Application.Mapping;
+using ProductApp.Application.Queries.Products;
 using ProductApp.Infrastructure.Commons;
 using System.Text;
 namespace ProductApp.Presentations.Commons;
@@ -16,6 +17,7 @@ public static class Bootstrapper
         service.ContextRegister(configuration);
         service.ApplicationRegister();
         service.AddAutoMapper(typeof(UserMappingProfile).Assembly);
+        service.AddAutoMapper(typeof(ProductCategoryMappingProfile).Assembly);
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

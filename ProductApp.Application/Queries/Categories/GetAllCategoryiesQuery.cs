@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using ProductApp.Domain.Categories.Entities;
+using ProductApp.Application.Dtos.CategoryDtos;
 
 namespace ProductApp.Application.Queries.Categories
 {
-    public class GetAllCategoryiesQuery : IRequest<List<Category>>
+    public class GetAllCategoryiesQuery : IRequest<List<CategoryDto>>
     {
     }
 }
