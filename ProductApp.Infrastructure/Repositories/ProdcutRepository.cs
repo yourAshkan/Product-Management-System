@@ -24,9 +24,13 @@ public class ProdcutRepository(AppDbContext _context) : IProductRepository
     #endregion
     
     #region Delete
-    public async Task DeleteAsync(Product product)
+    public async Task SoftDeleteAsync(int productId)
     {
-        _context.Remove(product);
+        var product = await _context.Products.FindAsync(productId);
+        if (product == null)
+            throw new Exception("Product Not Found!");
+
+        product.SoftDeleted();
         await _context.SaveChangesAsync();
     }
     #endregion

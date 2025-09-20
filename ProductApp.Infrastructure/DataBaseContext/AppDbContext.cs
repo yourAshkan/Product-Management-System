@@ -28,6 +28,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<Applicat
         modelBuilder.Entity<Product>()
             .Property(x => x.Price)
             .HasPrecision(18, 2);
+
+        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
     }
     public override int SaveChanges()
     {

@@ -17,7 +17,7 @@ public class DeleteProductCommandHandler(IProductRepository _repo) : IRequestHan
                 throw new Exception("You are not allowed to modify this product!");
 
 
-            await _repo.DeleteAsync(prodcut);
+            await _repo.SoftDeleteAsync(request.ProductId);
             return true;
         }
         catch (Exception ex)

@@ -13,6 +13,7 @@ public class Product
     public decimal? Price { get; private set; }
     public int? Count { get; private set; }
     public bool IsAvailable { get; set; } = true;
+    public bool IsDeleted { get; set; } = false;
     public int? UserId { get; set; } 
     public User User { get; set; }
     public int? CategoryId { get; set; }
@@ -35,6 +36,10 @@ public class Product
         ProduceDate = DateTime.Now;
     }
 
+    public void SoftDeleted()
+    {
+        IsDeleted = true;
+    }
     public bool CanModify(int currentUserId)
     {
        return UserId == currentUserId;
