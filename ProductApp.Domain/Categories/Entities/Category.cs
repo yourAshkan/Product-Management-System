@@ -7,9 +7,14 @@ namespace ProductApp.Domain.Categories.Entities
         public int Id { get; set; }
         public string Name { get; private set; } = name;
         public int UserId { get; private set; } = userId;
+        public bool IsDeleted { get; set; } = false;
         public List<Product> Products { get; private set; } = new List<Product>();
 
-
+        
+        public void SoftDeleted()
+        {
+            IsDeleted = true;
+        }
         public bool CanModify(int currentUserId)
         {
             return UserId == currentUserId;

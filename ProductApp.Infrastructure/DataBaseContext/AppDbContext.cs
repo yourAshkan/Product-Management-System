@@ -30,6 +30,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<Applicat
             .HasPrecision(18, 2);
 
         modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
     }
     public override int SaveChanges()
     {
