@@ -12,7 +12,7 @@ namespace ProductApp.Presentations.Controllers
     {
         #region CreateProduct
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -28,7 +28,7 @@ namespace ProductApp.Presentations.Controllers
 
         #region UpdateProduct
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, EditProductCommnad commnad)
         {
             commnad.ProductId = id;
@@ -43,7 +43,7 @@ namespace ProductApp.Presentations.Controllers
 
         #region DeleteProduct
         [HttpDelete("DeleteProduct")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromBody] int id)
         {
             var userIdCliam = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -74,7 +74,7 @@ namespace ProductApp.Presentations.Controllers
 
         #region GetById
         [HttpGet("ById")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _mediator.Send(new GetProductById(id));

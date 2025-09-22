@@ -13,7 +13,7 @@ namespace ProductApp.WebApi.Controllers
     public class CategoriesController(IMediator _mediator) : ControllerBase
     {
         #region CreateCategory
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
         {
@@ -29,7 +29,7 @@ namespace ProductApp.WebApi.Controllers
         #endregion
 
         #region DeleteCategory
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] int id)
         {

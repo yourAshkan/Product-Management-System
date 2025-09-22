@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductApp.Infrastructure.DataBaseContext;
 
 namespace ProductApp.WebApi.Controllers
@@ -9,6 +10,7 @@ namespace ProductApp.WebApi.Controllers
     {
         #region IncreaseStock
         [HttpPost("IncreaseStock/productid")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> IncreaseStock(int productid, [FromQuery] int amount)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == productid);
@@ -30,6 +32,7 @@ namespace ProductApp.WebApi.Controllers
 
         #region DecreaseStock
         [HttpPost("DecreaseStock/productid")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DecreaseStock(int productid, [FromQuery] int amount)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == productid);
@@ -54,6 +57,7 @@ namespace ProductApp.WebApi.Controllers
 
         #region GetStock
         [HttpGet("GetStock/productid")]
+        [Authorize(Roles ="Admin,User")]
         public async Task<IActionResult> GetStock(int productid)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == productid);

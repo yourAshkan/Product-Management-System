@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProductApp.Domain.Cart.Entities;
 using ProductApp.Domain.Categories.Entities;
 using ProductApp.Domain.Products.Entities;
 using ProductApp.Infrastructure.Identity;
@@ -11,6 +12,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<Applicat
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,6 +30,23 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<Applicat
         modelBuilder.Entity<Product>()
             .Property(x => x.Price)
             .HasPrecision(18, 2);
+
+        modelBuilder.Entity<ShoppingCart>()
+            .HasMany(x => x.Items)
+            .WithOne(x => x.Cart)
+            .HasForeignKey(x => x.CartId);
+
+        modelBuilder.Entity<ShoppingCart>()
+            .HasOne<ApplicationUser>()
+            .WithMany()
+            .HasForeignKey(x=>x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(x => x.Product)
+            .WithMany()
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
         modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);

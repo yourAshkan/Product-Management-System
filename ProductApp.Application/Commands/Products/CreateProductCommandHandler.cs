@@ -23,9 +23,9 @@ public class CreateProductCommandHandler(IProductRepository _repo) : IRequestHan
             await _repo.AddAsync(product);
             return product;
         }
-        catch
+        catch(Exception ex)
         {
-            throw new Exception("Error!");
+            throw new Exception("Error!",ex);
         }
     }
 }
