@@ -11,7 +11,7 @@ public class Product
     public string ManufactureEmail { get; private set; }
     public string ManufacturePhone { get; private set; }
     public decimal? Price { get; private set; }
-    public int? Count { get; private set; }
+    public int? Count { get; set; }
     public bool IsAvailable { get; set; } = true;
     public bool IsDeleted { get; set; } = false;
     public int? UserId { get; set; } 
@@ -36,10 +36,6 @@ public class Product
         ProduceDate = DateTime.Now;
     }
 
-    public void SoftDeleted()
-    {
-        IsDeleted = true;
-    }
     public bool CanModify(int currentUserId)
     {
        return UserId == currentUserId;
@@ -59,6 +55,32 @@ public class Product
     public void AssignCategory(int categoryId)
     {
         CategoryId = categoryId;
+    }
+    public bool HasEnoughStock(int amount)
+    {
+        return Count.HasValue && Count.Value >= amount;
+    }
+    public void DecreaseCount(int amount)
+    {
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be greater than zero!");
+
+
+        if (Count - amount < 0)
+            throw new ArgumentException("nventory cannot go below zero!");
+
+        Count -= amount;
+    }
+    public void IncreaseCount(int amount)
+    {
+        if (amount <= 0)
+            throw new ArgumentException("Amount must greater than zero!");
+
+        Count += amount;
+    }
+    public void SoftDeleted()
+    {
+        IsDeleted = true;
     }
 }
 

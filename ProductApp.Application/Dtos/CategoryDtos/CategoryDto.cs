@@ -1,6 +1,4 @@
-﻿using ProductApp.Application.Dtos.ProductDtos;
-
-namespace ProductApp.Application.Dtos.CategoryDtos
+﻿namespace ProductApp.Application.Dtos.CategoryDtos
 {
     public class CategoryDto
     {

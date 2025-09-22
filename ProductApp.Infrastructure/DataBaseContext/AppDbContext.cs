@@ -14,10 +14,9 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<Applicat
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<IdentityUserLogin<int>>().HasNoKey();
-        modelBuilder.Entity<IdentityUserRole<int>>().HasNoKey();
-        modelBuilder.Entity<IdentityUserToken<int>>().HasNoKey();
-        modelBuilder.Entity<IdentityUserClaim<int>>().HasNoKey();
+        modelBuilder.Entity<IdentityUserRole<int>>().HasKey(x=> new {x.UserId,x.RoleId});
+        modelBuilder.Entity<IdentityUserLogin<int>>().HasKey(x=>x.UserId);
+        modelBuilder.Entity<IdentityUserToken<int>>().HasKey(x=>x.UserId);
 
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)

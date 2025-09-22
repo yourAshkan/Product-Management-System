@@ -9,76 +9,92 @@ using System.Text;
 using ProductApp.Infrastructure.Identity;
 using ProductApp.Domain.Users.Entities;
 
-namespace ProductApp.Presentations.Controllers
+namespace ProductApp.Presentations.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController(UserManager<ApplicationUser> userManager,IConfiguration config, SignInManager<ApplicationUser> signInManager,IMapper _mapper) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController(UserManager<ApplicationUser> userManager,IConfiguration config, SignInManager<ApplicationUser> signInManager,IMapper _mapper) : ControllerBase
+    #region SignUp
+    [HttpPost("SignUp")]
+    public async Task<IActionResult> Register(RegisterDto dto)
     {
-        #region SignUp
-        [HttpPost("SignUp")]
-        public async Task<IActionResult> Register(RegisterDto dto)
+        var user = _mapper.Map<User>(dto);
+
+        var appUser = new ApplicationUser
         {
-            var user = _mapper.Map<User>(dto);
+            UserName = user.Email,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+        };
 
-            var appUser = new ApplicationUser
-            {
-                UserName = user.Email,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-            };
+        var result = await userManager.CreateAsync(appUser, dto.Password);
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
 
-            var result = await userManager.CreateAsync(appUser, dto.Password);
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
 
-            var token = GenerateJwtToken(appUser);
-            return Ok(new { token });
-        }
-        #endregion
+        var addRoleResult = await userManager.AddToRoleAsync(appUser, "User");
+        if(!addRoleResult.Succeeded)
+            return BadRequest(addRoleResult.Errors);
 
-        #region LogIn
 
-        [HttpPost("LogIn")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
-            var user = await userManager.FindByNameAsync(dto.Email);
-
-            if (user == null)
-                return BadRequest("Invalid Email or password");
-
-            var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-            if (!result.Succeeded)
-                return Unauthorized("Invalid Email or password");
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { token });
-        } 
-        #endregion
-
-        #region GenerateJWT
-        private string GenerateJwtToken(IdentityUser<int> user)
-        {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Name,user.UserName)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: config["JWT:Issuer"],
-                audience: config["JWT:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: creds
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        } 
-        #endregion
+        var token = GenerateJwtToken(appUser);
+        return Ok(new { token });
     }
+    #endregion
+
+    #region LogIn
+
+    [HttpPost("LogIn")]
+    public async Task<IActionResult> Login(LoginDto dto)
+    {
+        var user = await userManager.FindByNameAsync(dto.Email);
+
+        if (user == null)
+            return BadRequest("Invalid Email or password");
+
+        var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+        if (!result.Succeeded)
+            return Unauthorized("Invalid Email or password");
+
+        var token = GenerateJwtToken(user);
+        return Ok(new { token });
+    } 
+    #endregion
+
+    #region GenerateJWT
+    private async Task<string> GenerateJwtToken(ApplicationUser user)
+    {
+        var roles = await userManager.GetRolesAsync(user);
+
+
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+            new Claim(ClaimTypes.Name,user.UserName ?? string.Empty),
+            new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString())
+        };
+
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: config["JWT:Issuer"],
+            audience: config["JWT:Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddHours(2),
+            signingCredentials: creds
+            );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    } 
+    #endregion
 }

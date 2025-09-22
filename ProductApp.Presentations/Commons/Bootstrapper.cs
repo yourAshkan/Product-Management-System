@@ -3,8 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProductApp.Application.Commans;
 using ProductApp.Application.Mapping;
-using ProductApp.Application.Queries.Products;
 using ProductApp.Infrastructure.Commons;
+using System.Security.Claims;
 using System.Text;
 namespace ProductApp.Presentations.Commons;
 
@@ -33,7 +33,10 @@ public static class Bootstrapper
                 ValidIssuer = configuration["JWT:Issuer"],
                 ValidAudience = configuration["JWT:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
+                    Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                NameClaimType = ClaimTypes.Name,
+                RoleClaimType = ClaimTypes.Role
+                
             };
         });
 
