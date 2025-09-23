@@ -8,11 +8,11 @@ namespace ProductApp.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin,User")]
     public class ShoppingCartController(AppDbContext _context) : ControllerBase
     {
         #region AddToCart
         [HttpPost("Add")]
+        [Authorize(Roles ="Admin,User")]
         public async Task<IActionResult> AddToCart(int productid, [FromQuery] int quentity)
         {
             var userClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -57,6 +57,7 @@ namespace ProductApp.WebApi.Controllers
 
         #region RemoveFromCart
         [HttpPost("Remove")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> RemoveFromCart(int productid, [FromQuery] int quentity)
         {
             var userClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -97,6 +98,7 @@ namespace ProductApp.WebApi.Controllers
 
         #region GetCart
         [HttpGet]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> GetCart()
         {
             var userClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -111,7 +113,7 @@ namespace ProductApp.WebApi.Controllers
                 .FirstOrDefaultAsync(x => x.UserId == userId);
 
             if (cart == null)
-                return NotFound("Cart Not Found!");
+                return NotFound("Your Cart is Empty!");
 
             var result = new
             {

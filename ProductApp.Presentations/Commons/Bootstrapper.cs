@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using ProductApp.Application.Commans;
 using ProductApp.Application.Mapping;
 using ProductApp.Infrastructure.Commons;
+using ProductApp.WebApi.Commons;
 using System.Security.Claims;
 using System.Text;
 namespace ProductApp.Presentations.Commons;
@@ -85,6 +86,7 @@ public static class Bootstrapper
             app.UseDeveloperExceptionPage();
         }
 
+        app.UseMiddleware<ValidationExceptionMiddleware>();
 
         app.UseHttpsRedirection();
 
