@@ -7,6 +7,7 @@ using ProductApp.Infrastructure.Commons;
 using ProductApp.WebApi.Commons;
 using System.Security.Claims;
 using System.Text;
+using ProductApp.Infrastructure.DataBaseContext;
 namespace ProductApp.Presentations.Commons;
 
 public static class Bootstrapper
@@ -47,6 +48,9 @@ public static class Bootstrapper
             options.JsonSerializerOptions.WriteIndented = true;
         });
         service.AddEndpointsApiExplorer();
+        service.AddHealthChecks()
+            .AddDbContextCheck<AppDbContext>("Database");
+
         service.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductApp API", Version = "v1" });
@@ -88,11 +92,15 @@ public static class Bootstrapper
 
         app.UseMiddleware<ValidationExceptionMiddleware>();
 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+
         app.UseHttpsRedirection();
 
         app.UseAuthentication();
 
         app.UseAuthorization();
+
+        app.MapHealthChecks("/health");
 
         app.MapControllers();
 

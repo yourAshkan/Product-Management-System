@@ -1,8 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using ProductApp.Infrastructure.Identity;
 using ProductApp.Presentations.Commons;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("Log/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(); 
 
 builder.Services.AddApiService(builder.Configuration);
 
