@@ -2,6 +2,7 @@
 
 - 🔐 **JWT Authentication & Role-based Authorization (Admin / User)**
 - 👥 **User Registration & Login using ASP.NET Core Identity**
+- 🧲 **Fluent Validation for Current Data**
 - 📦 **CRUD operations for Products + Inventory Management**
 - 🛒 **Shopping Cart System (Add to Cart, Total Price, Stock Deduction)**
 - 🧱 **Clean Architecture (Domain, Application, Infrastructure, WebAPI)**
